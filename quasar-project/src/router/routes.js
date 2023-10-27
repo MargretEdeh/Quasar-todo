@@ -4,20 +4,15 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: '/help', component: () => import('pages/HelpPage.vue') }
-
+      { path: '', component: () => import('pages/IndexPage.vue'), meta: { requiresAuth: true } },
+      { path: '/help', component: () => import('pages/HelpPage.vue'), meta: { requiresAuth: true } }
     ]
   },
   {
-    path: '/login',
-    component: ()=> import ('pages/LoginPage.vue')
+    path: '/google',
+    component: () => import('pages/RegisterPage.vue'),
+    meta: { requiresAuth: false } 
   },
-  {
-    path: '/register',
-    component: ()=> import ('pages/RegisterPage.vue')
-  },
-
   // Always leave this as last one,
   // but you can also remove it
   {

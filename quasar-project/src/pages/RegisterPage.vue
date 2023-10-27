@@ -1,62 +1,51 @@
+// Your authentication component file (e.g., GoogleAuth.vue)
 <template>
-  <div class="body">
-    <h4>Register!!</h4>
-    <input v-model="email" type="email" placeholder="Email">
-    <input v-model="password" type="password" placeholder="Password">
-    <button class="intb" @click="register">Register</button>
+  <div class="google-auth">
+    <q-btn class="btn" @click="signInWithGoogle" color="blue">
+      Sign in with Google
+    </q-btn>
+
+
   </div>
 </template>
 
 <script>
 import { ref } from 'vue';
+import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { auth } from '../../src/boot/firebase'
 
 export default {
   setup() {
-    const email = ref('');
-    const password = ref('');
+    const store = useStore(); 
     const router = useRouter();
 
-    const register = async () => {
+    const signInWithGoogle = async () => {
       try {
-        await auth.createUserWithEmailAndPassword(email.value, password.value);
-        router.push('/login');
+        const user = await store.dispatch('signInWithGoogle');
+        if (user) {
+          router.push('/');
+        }
       } catch (error) {
-        console.error('Registration error:', error.message);
+        console.error('Google Sign-in Error', error.message);
       }
     };
 
     return {
-      email,
-      password,
-      register,
+      signInWithGoogle,
     };
   },
 };
 </script>
-
 <style scoped>
-.body {
+.google-auth {
+  margin: 0 auto;
   display: flex;
-  flex-direction: column;
-  width: 50%;
-  margin:  0 auto;
-  margin-top: 10%;
-  gap: 10px;
-}
+  /* align-items: center; */
+  /* margin-top: 10%; */
 
-input {
-  border-color: rgba(53, 130, 231, 0.582);
-  outline: none;
-  padding: 10px;
-  border-radius: 10px;
 }
-
-.intb {
-  padding: 10px;
-  background: rgba(53, 130, 231, 0.582);
-  outline: none;
-  border: none;
+.btn{
+  padding: 20px;
+  margin: 10% auto;
 }
 </style>
